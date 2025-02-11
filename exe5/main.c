@@ -6,6 +6,7 @@ const int BTN_PIN = 26;
 const int BTN_PIN_2 = 7;
 
 int main() {
+    bool blue_state = false, green_state = false;
     stdio_init_all();
 
     gpio_init(BTN_PIN);
@@ -19,15 +20,22 @@ int main() {
     int cnt_2 = 0;
 
     while (true) {
-
-        if (!gpio_get(BTN_PIN)) {
+        if (!gpio_get(BTN_PIN) && !green_state) {
             sleep_ms(500);
+            green_state = true;
             printf("Botao 1: %d\n", cnt_1++);
+        }  else if (gpio_get(BTN_PIN) && green_state) {
+            sleep_ms(500);
+            green_state = false;
         }
 
-        if (!gpio_get(BTN_PIN_2)) {
+        if (!gpio_get(BTN_PIN_2) && !blue_state) {
             sleep_ms(500);
+            blue_state = true;
             printf("Botao 2: %d\n", cnt_2++);
+        } else if (gpio_get(BTN_PIN) && blue_state) {
+            sleep_ms(500);
+            blue_state = false;
         }
     }
 }
